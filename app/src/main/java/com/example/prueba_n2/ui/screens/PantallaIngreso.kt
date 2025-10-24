@@ -1,4 +1,5 @@
-package com.example.prueba_n2.screens
+package com.example.prueba_n2.ui.screens
+
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -10,12 +11,10 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PantallaRegistro(
-    onRegisterClick: (String, String, String, String) -> Unit, // Acción de registro
-    onNavigateToLogin: () -> Unit                             // Acción para volver
+fun PantallaIngreso(
+    onLoginClick: (String, String) -> Unit, // Acción al hacer login
+    onNavigateToRegister: () -> Unit      // Acción para ir a registro
 ) {
-    var nombre by remember { mutableStateOf("") }
-    var telefono by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -26,24 +25,8 @@ fun PantallaRegistro(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Crear Cuenta", style = MaterialTheme.typography.headlineLarge)
+        Text("Urban Shop", style = MaterialTheme.typography.headlineLarge)
         Spacer(modifier = Modifier.height(32.dp))
-
-        OutlinedTextField(
-            value = nombre,
-            onValueChange = { nombre = it },
-            label = { Text("Nombre Completo") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = telefono,
-            onValueChange = { telefono = it },
-            label = { Text("Número Telefónico") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             value = email,
@@ -63,15 +46,15 @@ fun PantallaRegistro(
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(
-            onClick = { onRegisterClick(nombre, telefono, email, password) },
+            onClick = { onLoginClick(email, password) },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Registrarse")
+            Text("Iniciar Sesión")
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        TextButton(onClick = onNavigateToLogin) {
-            Text("¿Ya tienes cuenta? Inicia Sesión")
+        TextButton(onClick = onNavigateToRegister) {
+            Text("¿No tienes cuenta? Regístrate")
         }
     }
 }

@@ -1,12 +1,19 @@
 package com.example.prueba_n2.ui.screens
 
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue // Para leer el valor (val ... by)
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue // Para escribir el valor (var ... by)
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -14,7 +21,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.prueba_n2.model.AppDatabase
-import com.example.prueba_n2.model.Usuario
 import com.example.prueba_n2.repository.UsuarioRepository
 import com.example.prueba_n2.ui.login.LoginViewModel
 import com.example.prueba_n2.ui.login.LoginViewModelFactory
@@ -23,10 +29,17 @@ import com.example.prueba_n2.ui.login.LoginState
 @Composable
 fun LoginScreen(onLoginSuccess: () -> Unit) {
     val context = LocalContext.current
-    val db = AppDatabase.getDatabase(context)
-    val repository = UsuarioRepository(db.usuarioDao())
-    val factory = LoginViewModelFactory(repository)
+
+    val scope = rememberCoroutineScope()
+
+    val factory = remember(context, scope) {
+        val db = AppDatabase.getDatabase(context.applicationContext, scope)
+        val repository = UsuarioRepository(db.usuarioDao())
+        LoginViewModelFactory(repository)
+    }
+
     val viewModel: LoginViewModel = viewModel(factory = factory)
+
 
     var nombre by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -71,7 +84,8 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
         // Botón principal y texto de error
         if (isRegisterMode) {
             Button(
-                onClick = { viewModel.registrarUsuario(Usuario(nombre = nombre, email = email, contrasena = password)) },
+                // ✅ CORREGIDO: Pasa los Strings separados
+                onClick = { viewModel.registrarUsuario(nombre, email, password) },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Registrar")
@@ -84,7 +98,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                 Text("Login")
             }
         }
-        
+
         Spacer(modifier = Modifier.height(8.dp))
 
         when (val state = loginState) {

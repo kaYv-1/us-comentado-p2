@@ -12,10 +12,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.prueba_n2.R // Importante: Asegúrate que esta sea tu R
-import com.example.prueba_n2.model.Product
+import com.example.prueba_n2.model.Producto
 
 @Composable
-fun TarjetaProducto(product: Product) {
+fun TarjetaProducto(producto: Producto) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -25,7 +25,7 @@ fun TarjetaProducto(product: Product) {
             // Imagen de la prenda (usamos un placeholder que ya existe)
             Image(
                 painter = painterResource(id = R.drawable.ic_launcher_background), // Cambia esto por la imagen real
-                contentDescription = product.name,
+                contentDescription = producto.name,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp),
@@ -38,9 +38,9 @@ fun TarjetaProducto(product: Product) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(product.name, style = MaterialTheme.typography.titleLarge)
+                    Text(producto.name, style = MaterialTheme.typography.titleLarge)
                     Text(
-                        "$${product.price}",
+                        "$${producto.price}",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
@@ -49,11 +49,11 @@ fun TarjetaProducto(product: Product) {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // Calificación
-                Text("Calificación: ${product.rating} ★", style = MaterialTheme.typography.bodyMedium)
+                Text("Calificación: ${producto.rating} ★", style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // Descripción
-                Text(product.description, style = MaterialTheme.typography.bodyMedium)
+                Text(producto.description, style = MaterialTheme.typography.bodyMedium)
             }
         }
     }

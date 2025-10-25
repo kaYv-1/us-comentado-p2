@@ -11,11 +11,10 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaRegistro(
-    onRegisterClick: (String, String, String, String) -> Unit, // Acción de registro
+    onRegister: (nombre: String, email: String, pass: String) -> Unit, // Acción de registro
     onNavigateToLogin: () -> Unit                             // Acción para volver
 ) {
     var nombre by remember { mutableStateOf("") }
-    var telefono by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -38,14 +37,6 @@ fun PantallaRegistro(
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = telefono,
-            onValueChange = { telefono = it },
-            label = { Text("Número Telefónico") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
             value = email,
             onValueChange = { email = it },
             label = { Text("Correo Electrónico") },
@@ -63,7 +54,7 @@ fun PantallaRegistro(
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(
-            onClick = { onRegisterClick(nombre, telefono, email, password) },
+            onClick = { onRegister(nombre, email, password) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Registrarse")

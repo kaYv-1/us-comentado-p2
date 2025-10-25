@@ -5,11 +5,11 @@ import com.example.prueba_n2.model.UsuarioDao
 
 class UsuarioRepository(private val usuarioDao: UsuarioDao) {
 
-    suspend fun insert(usuario: Usuario) {
-        usuarioDao.insert(usuario)
+    suspend fun insertUsuario(usuario: Usuario) {
+        usuarioDao.insertUsuario(usuario)
     }
 
-    suspend fun getUsuarioPorEmail(email: String): Usuario? {
-        return usuarioDao.getUsuarioPorEmail(email)
+    suspend fun getUsuarioByEmail(email: String): Usuario? {
+        return usuarioDao.getUsuarioByEmail(email)
     }
 }

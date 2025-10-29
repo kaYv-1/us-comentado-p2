@@ -8,15 +8,14 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [Producto::class, Usuario::class], version = 4, exportSchema = false)
+@Database(entities = [Producto::class, Usuario::class], version = 8, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun productoDao(): ProductoDao
+
     abstract fun usuarioDao(): UsuarioDao
 
-    private class AppDatabaseCallback(
-        private val scope: CoroutineScope
-    ) : RoomDatabase.Callback() {
+    private class AppDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
 
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
@@ -42,7 +41,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "app_database" // Cambiado de "producto_database" al nombre original
+                    "app_database"
                 )
                     .addCallback(AppDatabaseCallback(scope))
                     .fallbackToDestructiveMigration()

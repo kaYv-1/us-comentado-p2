@@ -9,33 +9,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.prueba_n2.ui.login.LoginState // Import LoginState
+import com.example.prueba_n2.viewmodel.LoginState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaIngreso(
-    // ✅ ADDED this parameter:
     loginState: LoginState,
     onLogin: (String, String) -> Unit,
     onNavigateToRegister: () -> Unit,
-    onLoginSuccess: () -> Unit // Keep this to navigate on success
+    onLoginSuccess: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val context = LocalContext.current
 
-    // Show messages based on loginState
     LaunchedEffect(loginState) {
         when (loginState) {
             is LoginState.Success -> {
                 Toast.makeText(context, "¡Ingreso exitoso!", Toast.LENGTH_SHORT).show()
-                onLoginSuccess() // Trigger navigation
+                onLoginSuccess()
             }
             is LoginState.Error -> {
                 Toast.makeText(context, loginState.message, Toast.LENGTH_LONG).show()
             }
-            LoginState.Empty -> {
-            }
+            LoginState.Empty -> {}
         }
     }
 
@@ -67,8 +64,6 @@ fun PantallaIngreso(
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(
-            // Disable button while loading if you add a Loading state
-            // enabled = loginState !is LoginState.Loading,
             onClick = { onLogin(email, password) },
             modifier = Modifier.fillMaxWidth()
         ) {

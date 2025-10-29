@@ -1,35 +1,37 @@
 package com.example.prueba_n2.model
 
+import com.example.prueba_n2.R
 import java.util.UUID
 
-// Lista de productos de prueba que se insertarán en la base de datos
 val dummyProductos = listOf(
     Producto(
         id = UUID.randomUUID().toString(),
-        name = "Zapatillas Urbanas",
-        price = 89990.0,
-        rating = 4.5f,
-        description = "Zapatillas cómodas y con estilo para el día a día. Material resistente y suela antideslizante.",
-        imageUrl = "https://assets.adidas.com/images/w_383,h_383,f_auto,q_auto,fl_lossy,c_fill,g_auto/d8e541f3a1ca488c9057c75100f4f71d_9366/zapatillas-streettalk.jpg",
-        sellerId = "tienda_oficial"
-    ),
-    Producto(
-        id = "2",
-        name = "Chaqueta Cortaviento",
-        price = 54.90,
-        description = "Ideal para días de viento.",
-        // ✅ AQUÍ ESTÁ TU URL ACTUALIZADA
-        imageUrl = "https://img.ltwebstatic.com/images3_pi/2024/08/27/fa/1724728959fb77d71664687db69f1bda1616c20015_thumbnail_560x.webp",
-        rating = 4.2f,
-        sellerId = "admin"
-    ),
-    Producto(
-        id = "3",
-        name = "Mochila Urbana",
-        price = 45.00,
-        description = "Mochila resistente con compartimento para laptop.",
-        imageUrl = "https://media.falabella.com/falabellaCL/139942163_01/w=800,h=800,fit=pad",
+        name = "Zapatillas Puma Suede",
+        price = 64990,
         rating = 4.8f,
-        sellerId = "admin"
+        description = "Un ícono del estilo urbano. Las Puma Suede son un clásico atemporal que combina con todo, perfectas para un look casual y cómodo.",
+        imageResId = R.drawable.producto_zapatillas,
+        sellerId = "tienda_oficial",
+        timestamp = System.currentTimeMillis() - 2 * 60 * 1000
+    ),
+    Producto(
+        id = UUID.randomUUID().toString(),
+        name = "Polerón Oversized Cierre",
+        price = 49990,
+        description = "Polerón negro con cierre y capucha, de calce oversized. Ideal para un estilo relajado y moderno. Hecho de algodón de alta calidad.",
+        imageResId = R.drawable.producto_poleron,
+        rating = 4.6f,
+        sellerId = "urban_style_cl",
+        timestamp = System.currentTimeMillis() - 1 * 60 * 1000
+    ),
+    Producto(
+        id = UUID.randomUUID().toString(),
+        name = "Jeans Anchos (Baggy)",
+        price = 59990,
+        description = "Jeans de estilo baggy con un lavado claro. La prenda perfecta para un look de los 90s, cómodos y con mucho estilo.",
+        imageResId = R.drawable.producto_jeans,
+        rating = 4.7f,
+        sellerId = "denim_masters",
+        timestamp = System.currentTimeMillis()
     )
 )

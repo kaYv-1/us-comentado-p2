@@ -8,11 +8,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource // Para usar R.string.app_name
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.prueba_n2.R // Importa tu R
 import com.example.prueba_n2.model.Usuario
 
 @OptIn(ExperimentalMaterial3Api::class)

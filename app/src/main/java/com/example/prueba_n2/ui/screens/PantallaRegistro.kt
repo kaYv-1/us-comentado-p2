@@ -11,8 +11,8 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaRegistro(
-    onRegister: (nombre: String, email: String, pass: String) -> Unit, // Acción de registro
-    onNavigateToLogin: () -> Unit                             // Acción para volver
+    onRegister: (nombre: String, email: String, pass: String) -> Unit,
+    onNavigateToLogin: () -> Unit
 ) {
     var nombre by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }

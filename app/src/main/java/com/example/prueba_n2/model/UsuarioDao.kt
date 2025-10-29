@@ -7,9 +7,8 @@ import androidx.room.Query
 @Dao
 interface UsuarioDao {
     @Insert
-    suspend fun insertUsuario(usuario: Usuario) // Sigue funcionando
+    suspend fun insertUsuario(usuario: Usuario)
 
     @Query("SELECT * FROM usuarios WHERE email = :email LIMIT 1")
-    suspend fun getUsuarioByEmail(email: String): Usuario? // Sigue funcionando
-
+    suspend fun getUsuarioByEmail(email: String): Usuario?
 }

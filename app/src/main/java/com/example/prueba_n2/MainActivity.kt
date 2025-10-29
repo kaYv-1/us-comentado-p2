@@ -11,41 +11,36 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.prueba_n2.model.AppDatabase
-import androidx.lifecycle.lifecycleScope
 import com.example.prueba_n2.repository.ProductoRepository
 import com.example.prueba_n2.repository.UsuarioRepository
-import com.example.prueba_n2.ui.login.LoginViewModel
-import com.example.prueba_n2.ui.login.LoginViewModelFactory
-import com.example.prueba_n2.ui.producto.ProductoViewModel
-import com.example.prueba_n2.ui.producto.ProductoViewModelFactory
 import com.example.prueba_n2.ui.screens.DetallesProducto
 import com.example.prueba_n2.ui.screens.PantallaIngreso
 import com.example.prueba_n2.ui.screens.PantallaPerfil
 import com.example.prueba_n2.ui.screens.PantallaRegistro
 import com.example.prueba_n2.ui.screens.PublicarProducto
 import com.example.prueba_n2.ui.theme.Prueba_n2Theme
+import com.example.prueba_n2.viewmodel.LoginViewModel
+import com.example.prueba_n2.viewmodel.LoginViewModelFactory
+import com.example.prueba_n2.viewmodel.ProductoViewModel
+import com.example.prueba_n2.viewmodel.ProductoViewModelFactory
 
 class MainActivity : ComponentActivity() {
 
-    private val database by lazy {
-        AppDatabase.getDatabase(this@MainActivity, lifecycleScope)
-    }
+    private val database by lazy { AppDatabase.getDatabase(this, lifecycleScope) }
     private val usuarioRepository by lazy { UsuarioRepository(database.usuarioDao()) }
     private val productoRepository by lazy { ProductoRepository(database.productoDao()) }
 
-    // Instanciamos tus clases Factory existentes
     private val loginViewModelFactory by lazy { LoginViewModelFactory(usuarioRepository) }
     private val productoViewModelFactory by lazy { ProductoViewModelFactory(productoRepository) }
 
-    // Usamos 'by viewModels' con las factories específicas
     private val loginViewModel: LoginViewModel by viewModels { loginViewModelFactory }
     private val productoViewModel: ProductoViewModel by viewModels { productoViewModelFactory }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +50,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // Pasa los ViewModels a la navegación (esto estaba bien)
                     AppNavigation(loginViewModel, productoViewModel)
                 }
             }
@@ -63,7 +57,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// Rutas (esto estaba bien)
 object AppRoutes {
     const val LOGIN = "login"
     const val REGISTRO = "registro"
@@ -72,7 +65,6 @@ object AppRoutes {
     const val PERFIL = "perfil"
 }
 
-// Navegación (esto estaba bien)
 @Composable
 fun AppNavigation(
     loginViewModel: LoginViewModel,
@@ -121,10 +113,9 @@ fun AppNavigation(
                 currentUser = currentUser,
                 onProductoPublicado = { nuevoProducto ->
                     productoViewModel.addProducto(nuevoProducto)
-                    // ✅ No necesitas popBackStack aquí si ya lo haces en onBack
-                    // navController.popBackStack() <--- ELIMINAR O COMENTAR SI ESTÁ DUPLICADO
+                    navController.popBackStack()
                 },
-                onBack = { navController.popBackStack() } // Este es el lugar correcto
+                onBack = { navController.popBackStack() }
             )
         }
 
@@ -134,8 +125,11 @@ fun AppNavigation(
                 onLogout = {
                     loginViewModel.logout()
                     navController.navigate(AppRoutes.LOGIN) {
-                        popUpTo(navController.graph.findStartDestination().id) { inclusive = true }
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
                         launchSingleTop = true
+                        restoreState = true
                     }
                 },
                 onBack = { navController.popBackStack() }

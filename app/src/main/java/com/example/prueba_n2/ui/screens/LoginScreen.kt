@@ -10,10 +10,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue // Para leer el valor (val ... by)
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue // Para escribir el valor (var ... by)
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.prueba_n2.model.AppDatabase
 import com.example.prueba_n2.repository.UsuarioRepository
-import com.example.prueba_n2.ui.login.LoginViewModel
-import com.example.prueba_n2.ui.login.LoginViewModelFactory
-import com.example.prueba_n2.ui.login.LoginState
+import com.example.prueba_n2.viewmodel.LoginViewModel
+import com.example.prueba_n2.viewmodel.LoginViewModelFactory
+import com.example.prueba_n2.viewmodel.LoginState
 
 @Composable
 fun LoginScreen(onLoginSuccess: () -> Unit) {
@@ -81,10 +81,8 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Botón principal y texto de error
         if (isRegisterMode) {
             Button(
-                // ✅ CORREGIDO: Pasa los Strings separados
                 onClick = { viewModel.registrarUsuario(nombre, email, password) },
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -115,7 +113,6 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Texto para cambiar de modo
         val switchText = if (isRegisterMode) {
             "¿Ya tienes cuenta? Inicia sesión"
         } else {

@@ -11,6 +11,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -22,22 +23,13 @@ import androidx.core.content.FileProvider
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.prueba_n2.model.Producto
-// ✅ 1. IMPORTAR LA CLASE USUARIO
 import com.example.prueba_n2.model.Usuario
 import java.io.File
-import java.util.Objects
-import java.util.UUID
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.painter.Painter
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PublicarProducto(
-    // ✅ 2. AÑADIR EL PARÁMETRO currentUser
     currentUser: Usuario?,
     onProductoPublicado: (Producto) -> Unit,
     onBack: () -> Unit
@@ -49,47 +41,42 @@ fun PublicarProducto(
     var photoUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
 
-    // --- LAUNCHERS (Sin cambios) ---
-
     val galleryLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        selectedImageUri = uri
-    }
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri: Uri? ->
+            selectedImageUri = uri
+        }
+    )
 
     val cameraLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicture()
-    ) { success: Boolean ->
-        if (success) {
-            selectedImageUri = photoUri
-        } else {
-            Toast.makeText(context, "No se pudo tomar la foto", Toast.LENGTH_SHORT).show()
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = { success: Boolean ->
+            if (success) {
+                selectedImageUri = photoUri
+            } else {
+                Toast.makeText(context, "No se pudo tomar la foto", Toast.LENGTH_SHORT).show()
+            }
         }
-    }
+    )
 
     val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            val newUri = createImageUri(context)
-            photoUri = newUri
-            cameraLauncher.launch(newUri)
-        } else {
-            Toast.makeText(context, "Permiso de cámara denegado", Toast.LENGTH_SHORT).show()
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted: Boolean ->
+            if (isGranted) {
+                val newUri = createImageUri(context)
+                photoUri = newUri
+                cameraLauncher.launch(newUri)
+            } else {
+                Toast.makeText(context, "Permiso de cámara denegado", Toast.LENGTH_SHORT).show()
+            }
         }
-    }
-
-    // --- UI (Scaffold y Column - Sin cambios en la estructura) ---
+    )
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Publicar Artículo") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Text("<-") // Reemplaza con un Icon si lo prefieres
-                    }
-                }
+                navigationIcon = { IconButton(onClick = onBack) { Text("<") } }
             )
         }
     ) { paddingValues ->
@@ -112,15 +99,11 @@ fun PublicarProducto(
             OutlinedTextField(
                 value = precio,
                 onValueChange = { newValue ->
-                    if (newValue.matches(Regex("^\\d*\\.?\\d*\$"))) {
-                        precio = newValue
-                    }
+                    if (newValue.all { it.isDigit() }) { precio = newValue }
                 },
-                label = { Text("Precio (ej. 49.99)") },
+                label = { Text("Precio (CLP)") },
                 modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number
-                )
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
             OutlinedTextField(
@@ -131,26 +114,16 @@ fun PublicarProducto(
                 minLines = 3
             )
 
-            // Visor de Imagen (Sin cambios)
             if (selectedImageUri != null) {
                 Image(
-                    painter = rememberAsyncImagePainter(
-                        ImageRequest.Builder(context)
-                            .data(selectedImageUri)
-                            .crossfade(true)
-                            .build()
-                    ),
+                    painter = rememberAsyncImagePainter(ImageRequest.Builder(context).data(selectedImageUri).crossfade(true).build()),
                     contentDescription = "Imagen seleccionada",
-                    modifier = Modifier
-                        .size(200.dp)
-                        .fillMaxWidth(),
+                    modifier = Modifier.size(200.dp).fillMaxWidth(),
                     contentScale = ContentScale.Crop
                 )
             } else {
                 Surface(
-                    modifier = Modifier
-                        .size(200.dp)
-                        .fillMaxWidth(),
+                    modifier = Modifier.size(200.dp).fillMaxWidth(),
                     color = MaterialTheme.colorScheme.surfaceVariant,
                     shape = MaterialTheme.shapes.medium
                 ) {
@@ -160,7 +133,6 @@ fun PublicarProducto(
                 }
             }
 
-            // Botones de Galería y Cámara (Sin cambios)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround
@@ -171,9 +143,7 @@ fun PublicarProducto(
 
                 Button(onClick = {
                     val permission = Manifest.permission.CAMERA
-                    val permissionCheckResult = ContextCompat.checkSelfPermission(context, permission)
-
-                    if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
                         val newUri = createImageUri(context)
                         photoUri = newUri
                         cameraLauncher.launch(newUri)
@@ -187,30 +157,22 @@ fun PublicarProducto(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Botón de Publicar
             Button(
                 onClick = {
                     val nuevoProducto = Producto(
                         id = UUID.randomUUID().toString(),
                         name = nombreArticulo,
-                        price = precio.toDoubleOrNull() ?: 0.0,
+                        price = precio.toIntOrNull() ?: 0,
                         description = descripcion,
-                        imageUrl = selectedImageUri?.toString() ?: "",
-                        rating = 0.0f, // Rating inicial
-                        // ✅ 3. USA EL ID DEL USUARIO ACTUAL
-                        // Si currentUser es nulo, se usa un ID de error para evitar que la app crashee,
-                        // aunque el botón estará deshabilitado.
-                        sellerId = (currentUser?.id ?: "error_user_id").toString()
+                        imageUri = selectedImageUri?.toString(),
+                        rating = 0.0f,
+                        sellerId = currentUser?.id.toString(),
+                        timestamp = System.currentTimeMillis()
                     )
                     onProductoPublicado(nuevoProducto)
                 },
                 modifier = Modifier.fillMaxWidth(),
-                // ✅ 4. ASEGÚRATE DE QUE EL USUARIO NO SEA NULO PARA HABILITAR EL BOTÓN
-                enabled = nombreArticulo.isNotBlank()
-                        && precio.isNotBlank()
-                        && descripcion.isNotBlank()
-                        && selectedImageUri != null
-                        && currentUser != null // <-- Comprobación añadida
+                enabled = nombreArticulo.isNotBlank() && precio.isNotBlank() && descripcion.isNotBlank() && currentUser != null
             ) {
                 Text("Publicar Artículo")
             }
@@ -218,7 +180,6 @@ fun PublicarProducto(
     }
 }
 
-// --- FUNCIÓN AUXILIAR (Sin cambios) ---
 private fun createImageUri(context: Context): Uri {
     val file = File(context.cacheDir, "${UUID.randomUUID()}.jpg")
     return FileProvider.getUriForFile(
@@ -227,4 +188,3 @@ private fun createImageUri(context: Context): Uri {
         file
     )
 }
-

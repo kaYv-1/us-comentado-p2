@@ -1,16 +1,18 @@
 package com.example.prueba_n2.model
 
-import androidx.room.Entity // ✅ AÑADIR
-import androidx.room.PrimaryKey // ✅ AÑADIR
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Entity(tableName = "productos") // ✅ AÑADIR (nombre de la tabla)
+@Entity(tableName = "productos")
 data class Producto(
-    @PrimaryKey // ✅ AÑADIR (id será la clave primaria)
-    val id: String, // Mantenemos String para UUID
+    @PrimaryKey
+    val id: String,
     val name: String,
-    val price: Double,
+    val price: Int,
     val rating: Float,
     val description: String,
-    val imageUrl: String?, // Puede ser null si no se selecciona imagen
-    val sellerId: String // Podría vincularse al Usuario ID en el futuro
+    val imageUri: String? = null,
+    val imageResId: Int? = null,
+    val sellerId: String,
+    val timestamp: Long
 )

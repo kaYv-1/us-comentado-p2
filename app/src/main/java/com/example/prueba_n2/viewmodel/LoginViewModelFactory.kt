@@ -1,4 +1,4 @@
-package com.example.prueba_n2.ui.login
+package com.example.prueba_n2.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

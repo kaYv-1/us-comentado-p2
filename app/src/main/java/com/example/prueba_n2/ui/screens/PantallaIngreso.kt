@@ -11,6 +11,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.prueba_n2.viewmodel.LoginState
 
+/**
+ * El Composable para la pantalla de inicio de sesión.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PantallaIngreso(

@@ -3,6 +3,9 @@ package com.example.prueba_n2.model
 import com.example.prueba_n2.R
 import java.util.UUID
 
+/**
+ * Define una lista de productos predeterminados para poblar la base de datos inicial.
+ */
 val dummyProductos = listOf(
     Producto(
         id = UUID.randomUUID().toString(),
@@ -12,7 +15,7 @@ val dummyProductos = listOf(
         description = "Un ícono del estilo urbano. Las Puma Suede son un clásico atemporal que combina con todo, perfectas para un look casual y cómodo.",
         imageResId = R.drawable.producto_zapatillas,
         sellerId = "tienda_oficial",
-        timestamp = System.currentTimeMillis() - 2 * 60 * 1000
+        timestamp = System.currentTimeMillis() - 2 * 60 * 1000 // Hace 2 minutos
     ),
     Producto(
         id = UUID.randomUUID().toString(),
@@ -22,7 +25,7 @@ val dummyProductos = listOf(
         imageResId = R.drawable.producto_poleron,
         rating = 4.6f,
         sellerId = "urban_style_cl",
-        timestamp = System.currentTimeMillis() - 1 * 60 * 1000
+        timestamp = System.currentTimeMillis() - 1 * 60 * 1000 // Hace 1 minuto
     ),
     Producto(
         id = UUID.randomUUID().toString(),
@@ -32,6 +35,6 @@ val dummyProductos = listOf(
         imageResId = R.drawable.producto_jeans,
         rating = 4.7f,
         sellerId = "denim_masters",
-        timestamp = System.currentTimeMillis()
+        timestamp = System.currentTimeMillis() // Ahora
     )
 )

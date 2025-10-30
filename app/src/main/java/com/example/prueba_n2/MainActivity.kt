@@ -30,6 +30,9 @@ import com.example.prueba_n2.viewmodel.LoginViewModelFactory
 import com.example.prueba_n2.viewmodel.ProductoViewModel
 import com.example.prueba_n2.viewmodel.ProductoViewModelFactory
 
+/**
+ * La actividad principal y único punto de entrada de la aplicación.
+ */
 class MainActivity : ComponentActivity() {
 
     private val database by lazy { AppDatabase.getDatabase(this, lifecycleScope) }
@@ -57,6 +60,9 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/**
+ * Un objeto que contiene las constantes de las rutas de navegación.
+ */
 object AppRoutes {
     const val LOGIN = "login"
     const val REGISTRO = "registro"
@@ -65,6 +71,9 @@ object AppRoutes {
     const val PERFIL = "perfil"
 }
 
+/**
+ * El componente Composable que gestiona toda la navegación de la aplicación.
+ */
 @Composable
 fun AppNavigation(
     loginViewModel: LoginViewModel,

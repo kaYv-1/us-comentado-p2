@@ -27,6 +27,9 @@ import com.example.prueba_n2.model.Usuario
 import java.io.File
 import java.util.*
 
+/**
+ * El Composable que representa la pantalla para publicar un nuevo producto.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PublicarProducto(

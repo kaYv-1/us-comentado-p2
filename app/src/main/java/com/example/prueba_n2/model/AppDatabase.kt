@@ -8,6 +8,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+/**
+ * La clase principal de la base de datos de la aplicación.
+ * Define las entidades, la versión y los DAOs.
+ */
 @Database(entities = [Producto::class, Usuario::class], version = 8, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 

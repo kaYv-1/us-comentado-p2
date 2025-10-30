@@ -25,6 +25,9 @@ import com.example.prueba_n2.model.Producto
 import java.text.NumberFormat
 import java.util.Locale
 
+/**
+ * Un Composable que muestra la información de un producto en una tarjeta.
+ */
 @Composable
 fun TarjetaProducto(producto: Producto) {
     Card(

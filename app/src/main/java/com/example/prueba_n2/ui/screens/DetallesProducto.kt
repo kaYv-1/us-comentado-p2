@@ -14,6 +14,9 @@ import androidx.compose.ui.unit.dp
 import com.example.prueba_n2.R
 import com.example.prueba_n2.model.Producto
 
+/**
+ * El Composable que representa la pantalla principal de la aplicación (el "For You Page" o FYP).
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetallesProducto(
